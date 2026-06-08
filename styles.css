@@ -81,8 +81,8 @@ img {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  width: 4.875rem;
-  height: 3.375rem;
+  width: 4.25rem;
+  height: 2.875rem;
   overflow: hidden;
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.2);
@@ -102,11 +102,11 @@ img {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 1.125rem;
+  padding: 0 1rem;
   border: 0;
   background: transparent;
   color: var(--black);
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1;
   text-decoration: none;
@@ -115,7 +115,7 @@ img {
 }
 
 .site-menu__nav button {
-  min-width: 4.875rem;
+  min-width: 4.25rem;
 }
 
 .site-menu__icon {
@@ -123,8 +123,8 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.375rem;
-  height: 3.375rem;
+  width: 2.875rem;
+  height: 2.875rem;
   padding: 0;
   border: 0;
   border-radius: 0.5rem;
@@ -137,14 +137,14 @@ img {
 .site-menu__mark {
   position: relative;
   display: block;
-  width: 0.6875rem;
-  height: 0.625rem;
+  width: 0.625rem;
+  height: 0.5625rem;
 }
 
 .site-menu__mark span {
   position: absolute;
-  width: 0.1875rem;
-  height: 0.1875rem;
+  width: 0.15625rem;
+  height: 0.15625rem;
   border-radius: 50%;
   background: var(--black);
 }
@@ -298,8 +298,8 @@ img {
 
   .site-menu__nav a,
   .site-menu__nav button {
-    padding: 0 0.75rem;
-    font-size: 0.875rem;
+    padding: 0 0.625rem;
+    font-size: 0.75rem;
   }
 
   .hero {
