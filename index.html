@@ -9,6 +9,14 @@
       content="m.v sensor product page hero section."
     />
     <link rel="stylesheet" href="styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+        }
+      }
+    </script>
   </head>
   <body>
     <header class="site-menu" aria-label="Primary">
@@ -81,7 +89,97 @@
           </p>
         </div>
       </section>
+
+      <section class="product-system" id="m2" aria-labelledby="product-system-title">
+        <div class="product-system__inner">
+          <div class="product-system__intro">
+            <h2 id="product-system-title" class="product-system__title">
+              <span>Beyond</span>
+              <span>Passive&nbsp;&nbsp;memory</span>
+            </h2>
+
+            <div class="product-system__figure" aria-label="m.v sensor component diagram">
+              <canvas
+                class="product-system__canvas"
+                data-product-scene
+                aria-hidden="true"
+              ></canvas>
+              <img
+                class="product-system__image"
+                src="assets/product-system-figure.png"
+                alt="Exploded view of the m.v sensor components."
+              />
+
+              <div class="part-card-wrap part-card-wrap--interface">
+                <article class="part-card" id="interface-disc-card" data-part-card="interface">
+                  <img src="assets/chip-product.png" alt="" />
+                  <div>
+                    <h3>Interface Disc</h3>
+                    <p>Returns stored memory to conscious experience.</p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="part-card-wrap part-card-wrap--engine">
+                <article class="part-card" id="memory-engine-card" data-part-card="engine">
+                  <img src="assets/chip-product.png" alt="" />
+                  <div>
+                    <h3>Memory Engine</h3>
+                    <p>
+                      Detects, processes, and encodes physiological reactions
+                      into memory.
+                    </p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="part-card-wrap part-card-wrap--outer">
+                <article class="part-card" id="outer-layer-card" data-part-card="outer">
+                  <img src="assets/chip-product.png" alt="" />
+                  <div>
+                    <h3>Outer Layer</h3>
+                    <p>
+                      A minimal protective shell engineered to integrate
+                      seamlessly with the body.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+
+          <ol class="system-steps" aria-label="Product behavior">
+            <li>
+              <p class="system-steps__label"><span>01/</span>Always Aware</p>
+              <p>
+                Continuously sensing your body in real time. m.v remains
+                attached and monitors physiological signals such as heart rate,
+                skin conductivity, and breathing patterns, creating a constant
+                stream of data without interrupting the moment.
+              </p>
+            </li>
+            <li>
+              <p class="system-steps__label"><span>02/</span>Nothing Gets Missed</p>
+              <p>
+                Detecting significant reactions as they happen, m.v identifies
+                moments of heightened response based on intensity and deviation
+                from baseline, capturing events the user may not consciously
+                notice.
+              </p>
+            </li>
+            <li>
+              <p class="system-steps__label"><span>03/</span>Reactivation</p>
+              <p>
+                Reintroducing the sensation back to the body, m.v translates
+                captured signals into physical stimuli, allowing the user to
+                experience the original feeling associated with each recorded
+                moment.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
     </main>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
