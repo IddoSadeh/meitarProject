@@ -282,6 +282,53 @@ img {
   outline-offset: 4px;
 }
 
+.reveal {
+  min-height: 120svh;
+  background: var(--black);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.reveal__inner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 100svh;
+  padding: clamp(5rem, 7.06vw, 7.625rem) clamp(1.25rem, 3.7vw, 4rem);
+}
+
+.reveal__text {
+  width: 100%;
+  margin: 0;
+  font-family:
+    "F37 Moon",
+    "Arial Black",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-size: clamp(1.75rem, 2.65vw, 3.375rem);
+  font-weight: 900;
+  line-height: 1.185185;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.reveal__indent {
+  display: inline-block;
+  width: clamp(7.25rem, 11.1vw, 12rem);
+}
+
+.reveal__char {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 120ms linear;
+}
+
+.reveal__char.is-active {
+  color: var(--white);
+}
+
 @media (max-width: 760px) {
   .site-menu {
     padding: 1rem;
@@ -329,16 +376,36 @@ img {
     gap: 0.75rem;
     white-space: normal;
   }
+
+  .reveal__text {
+    font-size: 1.75rem;
+  }
+
+  .reveal__indent {
+    width: clamp(3.5rem, 14vw, 6rem);
+  }
 }
 
 @media (min-width: 761px) and (max-width: 1200px) {
   .hero__title {
     font-size: 3rem;
   }
+
+  .reveal__text {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 420px) {
   .hero__title {
     font-size: 1.7rem;
+  }
+
+  .reveal__text {
+    font-size: 1.45rem;
+  }
+
+  .reveal__indent {
+    width: 2.25rem;
   }
 }
