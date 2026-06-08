@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>m.v 3D Tuner</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body class="tuner-page">
+    <main class="tuner-page__main">
+      <section class="tuner-page__intro">
+        <h1>m.v 3D Tuner</h1>
+        <p>
+          Adjust model position, rotation, scale, and lighting. Send back the
+          printed values from the panel for the final website scene.
+        </p>
+      </section>
+
+      <section class="product-system product-system--tuner" aria-label="3D model tuner">
+        <div class="product-system__inner">
+          <div class="product-system__figure" data-show-tuner="true">
+            <canvas
+              class="product-system__canvas"
+              data-product-scene
+              aria-label="Interactive 3D component tuner"
+            ></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
