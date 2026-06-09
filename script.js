@@ -3,6 +3,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const localeTime = document.querySelector("#locale-time");
 const revealTexts = document.querySelectorAll("[data-scroll-reveal]");
+const letterDropTexts = document.querySelectorAll("[data-letter-drop]");
 const modelPartConfigs = [
   {
     key: "interface",
@@ -109,6 +110,35 @@ function updateRevealText() {
   }
 }
 
+function setupLetterDrop(element) {
+  const text = element.textContent.trim();
+  const fragment = document.createDocumentFragment();
+  let index = 0;
+
+  element.setAttribute("aria-label", text);
+  element.textContent = "";
+
+  for (const character of text) {
+    const span = document.createElement("span");
+    span.setAttribute("aria-hidden", "true");
+
+    if (character === " ") {
+      span.className = "letter-space";
+      span.textContent = "\u00a0";
+      fragment.appendChild(span);
+      continue;
+    }
+
+    span.className = "letter-drop";
+    span.style.setProperty("--letter-index", index);
+    span.textContent = character;
+    fragment.appendChild(span);
+    index += 1;
+  }
+
+  element.appendChild(fragment);
+}
+
 for (const element of revealTexts) {
   setupRevealText(element);
 }
@@ -116,6 +146,25 @@ for (const element of revealTexts) {
 updateRevealText();
 window.addEventListener("scroll", updateRevealText, { passive: true });
 window.addEventListener("resize", updateRevealText);
+
+for (const element of letterDropTexts) {
+  setupLetterDrop(element);
+}
+
+if (letterDropTexts.length > 0) {
+  const letterDropObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        entry.target.classList.toggle("is-letter-drop-active", entry.isIntersecting);
+      }
+    },
+    { threshold: 0.55 },
+  );
+
+  for (const element of letterDropTexts) {
+    letterDropObserver.observe(element);
+  }
+}
 
 const productScene = document.querySelector("[data-product-scene]");
 
