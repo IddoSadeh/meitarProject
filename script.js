@@ -9,24 +9,33 @@ const modelPartConfigs = [
     path: "3d_Models/GLTF/METAL_RING.glb",
     assembledPosition: [-1.2, 0.8, 0.2],
     position: [-4.35, 2.05, 0],
+    compactPosition: [-1.45, 1.05, 0],
+    compactAssembledPosition: [-0.25, 0.25, 0.2],
     rotation: [-0.2094, 5.8992, -0.1222],
     size: 1.66,
+    compactSize: 0.92,
   },
   {
     key: "engine",
     path: "3d_Models/GLTF/CHIP.glb",
     assembledPosition: [-1.2, 0.8, 0],
     position: [-1.2, 0.8, 0],
+    compactPosition: [-0.25, 0.25, 0],
+    compactAssembledPosition: [-0.25, 0.25, 0],
     rotation: [-0.2094, 5.8992, -0.1222],
     size: 1.45,
+    compactSize: 0.82,
   },
   {
     key: "outer",
     path: "3d_Models/GLTF/GLASS.glb",
     assembledPosition: [-1.2, 0.8, -0.2],
     position: [3.0, -0.55, 0],
+    compactPosition: [1.2, -0.45, 0],
+    compactAssembledPosition: [-0.25, 0.25, -0.2],
     rotation: [-0.2094, 5.8992, -0.1222],
     size: 4.25,
+    compactSize: 2.3,
   },
 ];
 
@@ -137,8 +146,10 @@ function setupProductScene(canvas) {
   const interactiveParts = [];
   const animatedParts = [];
   let activePart = null;
-  let cameraViewHeight = 6.7;
-  const useScrollExplosion = figure?.dataset.showTuner !== "true";
+  const isCompactScene = window.matchMedia("(max-width: 760px)").matches;
+  let cameraViewHeight = isCompactScene ? 5.2 : 6.7;
+  const useScrollExplosion =
+    figure?.dataset.showTuner !== "true" && !isCompactScene;
 
   renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -167,7 +178,9 @@ function setupProductScene(canvas) {
   lights.rim.position.set(3, 1.5, 4);
   scene.add(lights.rim);
 
-  Promise.all(modelPartConfigs.map((part) => loadPart(loader, part)))
+  const sceneParts = modelPartConfigs.map((part) => getResponsivePartConfig(part, isCompactScene));
+
+  Promise.all(sceneParts.map((part) => loadPart(loader, part)))
     .then((loadedParts) => {
       for (const part of loadedParts) {
         scene.add(part.group);
@@ -245,6 +258,17 @@ function setupProductScene(canvas) {
 
     renderer.render(scene, camera);
   }
+}
+
+function getResponsivePartConfig(part, isCompact) {
+  if (!isCompact) return part;
+
+  return {
+    ...part,
+    assembledPosition: part.compactAssembledPosition || part.assembledPosition,
+    position: part.compactPosition || part.position,
+    size: part.compactSize || part.size,
+  };
 }
 
 async function loadPart(loader, part) {
