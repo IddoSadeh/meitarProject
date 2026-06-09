@@ -7,6 +7,7 @@ const modelPartConfigs = [
   {
     key: "interface",
     path: "3d_Models/GLTF/METAL_RING.glb",
+    assembledPosition: [-1.2, 0.8, 0.2],
     position: [-4.35, 2.05, 0],
     rotation: [-0.2094, 5.8992, -0.1222],
     size: 1.66,
@@ -14,6 +15,7 @@ const modelPartConfigs = [
   {
     key: "engine",
     path: "3d_Models/GLTF/CHIP.glb",
+    assembledPosition: [-1.2, 0.8, 0],
     position: [-1.2, 0.8, 0],
     rotation: [-0.2094, 5.8992, -0.1222],
     size: 1.45,
@@ -21,6 +23,7 @@ const modelPartConfigs = [
   {
     key: "outer",
     path: "3d_Models/GLTF/GLASS.glb",
+    assembledPosition: [-1.2, 0.8, -0.2],
     position: [3.0, -0.55, 0],
     rotation: [-0.2094, 5.8992, -0.1222],
     size: 4.25,
@@ -132,8 +135,10 @@ function setupProductScene(canvas) {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2(10, 10);
   const interactiveParts = [];
+  const animatedParts = [];
   let activePart = null;
   let cameraViewHeight = 6.7;
+  const useScrollExplosion = figure?.dataset.showTuner !== "true";
 
   renderer.setClearColor(0x000000, 0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -167,6 +172,7 @@ function setupProductScene(canvas) {
       for (const part of loadedParts) {
         scene.add(part.group);
         interactiveParts.push(...part.meshes);
+        animatedParts.push(part);
       }
 
       figure?.classList.add("is-3d-ready");
@@ -219,6 +225,10 @@ function setupProductScene(canvas) {
   function animate() {
     requestAnimationFrame(animate);
 
+    if (useScrollExplosion) {
+      updateExplosionProgress(animatedParts, figure);
+    }
+
     for (const mesh of interactiveParts) {
       mesh.parent.rotation.z += mesh.userData.spin || 0;
     }
@@ -242,10 +252,12 @@ async function loadPart(loader, part) {
   const group = new THREE.Group();
   const model = gltf.scene;
   const meshes = [];
+  const assembledPosition = new THREE.Vector3(...(part.assembledPosition || part.position));
+  const explodedPosition = new THREE.Vector3(...part.position);
 
   group.add(model);
   normalizeModel(model, part.size);
-  group.position.set(...part.position);
+  group.position.copy(explodedPosition);
   group.rotation.set(...part.rotation);
 
   model.traverse((child) => {
@@ -260,7 +272,34 @@ async function loadPart(loader, part) {
 
   group.userData.part = part.key;
 
-  return { key: part.key, group, meshes, initialSize: part.size, model };
+  return {
+    key: part.key,
+    group,
+    meshes,
+    initialSize: part.size,
+    model,
+    assembledPosition,
+    explodedPosition,
+  };
+}
+
+function updateExplosionProgress(parts, figure) {
+  if (!figure) return;
+
+  const section = figure.closest(".product-system");
+  const rect = section.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const scrollDistance = viewportHeight * 0.24;
+  const raw = Math.max(-rect.top, 0) / scrollDistance;
+  const progress = smoothstep(Math.min(Math.max(raw, 0), 1));
+
+  for (const part of parts) {
+    part.group.position.lerpVectors(part.assembledPosition, part.explodedPosition, progress);
+  }
+}
+
+function smoothstep(value) {
+  return value * value * (3 - 2 * value);
 }
 
 function normalizeModel(model, targetSize) {
