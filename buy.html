@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>m.2 | Buy Now</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body class="buy-page">
+    <header class="site-menu" aria-label="Primary">
+      <div class="site-menu__status" aria-label="Local interface status">
+        <span class="site-menu__dot" aria-hidden="true"></span>
+        <span id="locale-time">IL_17:05:48</span>
+      </div>
+
+      <div class="site-menu__actions">
+        <nav class="site-menu__nav" aria-label="Site">
+          <a href="index.html#m2">M2</a>
+          <a href="index.html#system">M2_os</a>
+          <a href="index.html">company</a>
+          <a href="#">Login</a>
+          <button type="button">MENU</button>
+        </nav>
+        <button class="site-menu__icon" type="button" aria-label="Open menu">
+          <span class="site-menu__mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="buy-section" aria-labelledby="buy-title">
+        <div class="buy-section__product" aria-hidden="true">
+          <img src="assets/buy-product.png" alt="" />
+        </div>
+
+        <aside class="order-card" aria-label="Order m.2 sensor">
+          <div class="order-card__top">
+            <div class="order-card__summary">
+              <div>
+                <h1 id="buy-title">m.2 Sensor</h1>
+                <p>Sensing For Continuous Wear</p>
+              </div>
+              <div class="order-card__quantity" aria-label="Quantity">
+                <button type="button" aria-label="Decrease quantity">-</button>
+                <span>1</span>
+                <button type="button" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+
+            <div class="order-card__config">
+              <div>
+                <p>Your Configuration</p>
+                <strong>m.2 Standard / Clear&nbsp; #D9DDDE</strong>
+              </div>
+              <button type="button" aria-label="Edit configuration">⌃</button>
+            </div>
+          </div>
+
+          <div class="order-card__bottom">
+            <p>Free shipping and returns</p>
+            <button class="order-card__buy" type="button">Buy</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
