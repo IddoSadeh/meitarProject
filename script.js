@@ -39,6 +39,27 @@ const modelPartConfigs = [
     compactSize: 2.3,
   },
 ];
+const sourceMaterialProfiles = {
+  interface: {
+    color: 0xd9d7d1,
+    roughness: 0.22,
+    metalness: 1,
+    envMapIntensity: 1.35,
+    opacity: 1,
+  },
+  outer: {
+    color: 0xe6f0f2,
+    roughness: 0.08,
+    metalness: 0,
+    specularIntensity: 1,
+    envMapIntensity: 1.65,
+    opacity: 0.28,
+    transmission: 0.6,
+    thickness: 0.35,
+    ior: 1.45,
+    transparent: true,
+  },
+};
 
 function getRegionCode() {
   const locale = Intl.DateTimeFormat().resolvedOptions().locale;
@@ -339,7 +360,7 @@ async function loadPart(loader, part) {
     child.userData.part = part.key;
     child.castShadow = false;
     child.receiveShadow = false;
-    softenMaterial(child.material);
+    applySourceMaterial(part.key, child.material);
     meshes.push(child);
   });
 
@@ -423,7 +444,7 @@ function setupPartThumbnail(canvas, config) {
     normalizeModel(model, config.key === "outer" ? 1.7 : 1.3);
     model.rotation.set(...config.rotation);
     model.traverse((child) => {
-      if (child.isMesh) softenMaterial(child.material);
+      if (child.isMesh) applySourceMaterial(config.key, child.material);
     });
     scene.add(model);
     sizeThumbnailRenderer();
@@ -453,6 +474,42 @@ function softenMaterial(material) {
 
     item.needsUpdate = true;
   }
+}
+
+function applySourceMaterial(partKey, material) {
+  const profile = sourceMaterialProfiles[partKey];
+
+  if (!profile) {
+    softenMaterial(material);
+    return;
+  }
+
+  const materials = Array.isArray(material) ? material : [material];
+
+  for (const item of materials) {
+    if (!item) continue;
+
+    item.color?.setHex(profile.color);
+    applyMaterialProperty(item, "roughness", profile.roughness);
+    applyMaterialProperty(item, "metalness", profile.metalness);
+    applyMaterialProperty(item, "specularIntensity", profile.specularIntensity);
+    applyMaterialProperty(item, "envMapIntensity", profile.envMapIntensity);
+    applyMaterialProperty(item, "opacity", profile.opacity);
+    applyMaterialProperty(item, "transmission", profile.transmission);
+    applyMaterialProperty(item, "thickness", profile.thickness);
+    applyMaterialProperty(item, "ior", profile.ior);
+
+    item.transparent = Boolean(profile.transparent);
+    item.depthWrite = !profile.transparent;
+    item.side = profile.transparent ? THREE.DoubleSide : THREE.FrontSide;
+    item.needsUpdate = true;
+  }
+}
+
+function applyMaterialProperty(material, key, value) {
+  if (value === undefined || !(key in material)) return;
+
+  material[key] = value;
 }
 
 function firstMaterial(part) {
