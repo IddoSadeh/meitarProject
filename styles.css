@@ -21,16 +21,16 @@
 }
 
 @font-face {
-  font-family: "Saans";
-  src: url("assets/fonts/Saans-TRIAL-Medium.otf") format("opentype");
+  font-family: "Saans Mono";
+  src: url("assets/fonts/SaansMono-TRIAL-Regular.ttf") format("truetype");
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Saans SemiMono";
-  src: url("assets/fonts/SaansSemiMono-TRIAL-Medium.ttf") format("truetype");
+  font-family: "Saans Mono";
+  src: url("assets/fonts/SaansMono-TRIAL-Medium.ttf") format("truetype");
   font-style: normal;
   font-weight: 500;
   font-display: swap;
@@ -44,7 +44,7 @@ html {
   background: var(--black);
   color: var(--white);
   font-family:
-    "Saans SemiMono",
+    "Saans Mono",
     "Roboto Mono",
     "SFMono-Regular",
     Consolas,
@@ -634,7 +634,7 @@ img {
 .system-steps__label {
   color: rgba(255, 255, 255, 0.5);
   font-family:
-    "Saans SemiMono",
+    "Saans Mono",
     "Roboto Mono",
     "SFMono-Regular",
     Consolas,
@@ -793,7 +793,7 @@ img {
   justify-content: space-between;
   gap: 2rem;
   font-family:
-    "Saans SemiMono",
+    "Saans Mono",
     "Roboto Mono",
     "SFMono-Regular",
     Consolas,
