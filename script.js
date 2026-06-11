@@ -188,12 +188,56 @@ if (letterDropTexts.length > 0) {
 }
 
 const productScene = document.querySelector("[data-product-scene]");
+const productCutoutScene = document.querySelector("[data-product-cutout-scene]");
 
 if (productScene) {
   setupProductScene(productScene);
 }
 
+if (productCutoutScene) {
+  setupProductCutoutScene(productCutoutScene);
+}
+
 setupPartThumbnails();
+
+function setupProductCutoutScene(figure) {
+  const scene = figure.querySelector(".product-cutout-scene");
+  const hotspots = figure.querySelectorAll("[data-part-hotspot]");
+  const cards = new Map(
+    Array.from(document.querySelectorAll("[data-part-card]")).map((card) => [
+      card.dataset.partCard,
+      card,
+    ]),
+  );
+  const useScrollExplosion = !window.matchMedia("(max-width: 760px)").matches;
+
+  function updateProgress() {
+    if (!scene) return;
+
+    const progress = useScrollExplosion ? getExplosionProgress(figure) : 1;
+    scene.style.setProperty("--explode-progress", progress.toFixed(4));
+  }
+
+  for (const hotspot of hotspots) {
+    hotspot.addEventListener("pointerenter", () => {
+      setActivePart(hotspot.dataset.partHotspot, cards);
+    });
+    hotspot.addEventListener("focus", () => {
+      setActivePart(hotspot.dataset.partHotspot, cards);
+    });
+    hotspot.addEventListener("pointerleave", () => {
+      setActivePart(null, cards);
+    });
+    hotspot.addEventListener("blur", () => {
+      setActivePart(null, cards);
+    });
+  }
+
+  figure.classList.add("is-cutout-ready");
+  updateProgress();
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  window.addEventListener("resize", updateProgress);
+}
 
 function setupProductScene(canvas) {
   const figure = canvas.closest(".product-system__figure");
@@ -380,16 +424,23 @@ async function loadPart(loader, part) {
 function updateExplosionProgress(parts, figure) {
   if (!figure) return;
 
+  const progress = getExplosionProgress(figure);
+
+  for (const part of parts) {
+    part.group.position.lerpVectors(part.assembledPosition, part.explodedPosition, progress);
+  }
+}
+
+function getExplosionProgress(figure) {
+  if (!figure) return 1;
+
   const section = figure.closest(".product-system");
   const rect = section.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
   const scrollDistance = viewportHeight * 0.24;
   const raw = Math.max(-rect.top, 0) / scrollDistance;
-  const progress = smoothstep(Math.min(Math.max(raw, 0), 1));
 
-  for (const part of parts) {
-    part.group.position.lerpVectors(part.assembledPosition, part.explodedPosition, progress);
-  }
+  return smoothstep(Math.min(Math.max(raw, 0), 1));
 }
 
 function smoothstep(value) {
@@ -408,8 +459,42 @@ function normalizeModel(model, targetSize) {
 
 function setActivePart(part, cards) {
   for (const [key, card] of cards) {
-    card.classList.toggle("is-active", key === part);
+    const isActive = key === part;
+    const wasActive = card.classList.contains("is-active");
+
+    card.classList.toggle("is-active", isActive);
+
+    if (isActive && !wasActive) {
+      activateProgressLine(card);
+    }
+
+    if (!isActive) {
+      resetProgressLine(card);
+    }
   }
+}
+
+function activateProgressLine(card) {
+  const line = card.querySelector(".progress-line");
+
+  if (!line) return;
+
+  line.style.transition = "none";
+  line.style.transform = "scaleX(0)";
+  void line.offsetWidth;
+  line.style.transition = "transform 5s linear, opacity 0.3s";
+  line.style.transform = "scaleX(1)";
+}
+
+function resetProgressLine(card) {
+  const line = card.querySelector(".progress-line");
+
+  if (!line) return;
+
+  line.style.transition = "none";
+  line.style.transform = "scaleX(0)";
+  void line.offsetWidth;
+  line.style.transition = "transform 5s linear, opacity 0.3s";
 }
 
 function setupPartThumbnails() {

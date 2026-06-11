@@ -500,6 +500,101 @@ img {
   cursor: default;
 }
 
+.product-cutout-scene {
+  --explode-progress: 0;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.product-cutout {
+  position: absolute;
+  inset: 4% 3%;
+  width: 94%;
+  max-width: none;
+  height: 92%;
+  object-fit: contain;
+  opacity: 0.96;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: filter 180ms ease;
+  transform:
+    translate(
+      calc(var(--explode-progress) * var(--explode-x, 0%)),
+      calc(var(--explode-progress) * var(--explode-y, 0%))
+    )
+    scale(var(--part-scale, 1));
+  transform-origin: 50% 50%;
+}
+
+.product-cutout--interface {
+  --explode-x: -27%;
+  --explode-y: -4%;
+  --part-scale: 0.98;
+  z-index: 3;
+}
+
+.product-cutout--engine {
+  --explode-x: 0%;
+  --explode-y: 0%;
+  --part-scale: 0.98;
+  z-index: 2;
+}
+
+.product-cutout--outer {
+  --explode-x: 28%;
+  --explode-y: 9%;
+  --part-scale: 0.98;
+  z-index: 1;
+}
+
+.product-hotspot {
+  position: absolute;
+  z-index: 3;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.product-hotspot:focus-visible {
+  outline: 1px solid var(--acid);
+  outline-offset: 0.25rem;
+}
+
+.product-hotspot--interface {
+  top: 41%;
+  left: 29%;
+  width: 14%;
+  height: 23%;
+}
+
+.product-hotspot--engine {
+  top: 41%;
+  left: 43%;
+  width: 14%;
+  height: 23%;
+}
+
+.product-hotspot--outer {
+  top: 23%;
+  left: 57%;
+  width: 23%;
+  height: 52%;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .product-system__image {
   position: absolute;
   inset: 0;
@@ -526,17 +621,19 @@ img {
 }
 
 .part-card {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1.75rem;
   width: min(18rem, 25vw);
   min-height: 7.5rem;
   padding: 1.25rem;
-  border: 1px solid var(--acid);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 0.75rem;
   background: rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 -1px 6px rgba(255, 255, 255, 0.12);
+  box-shadow: none;
   opacity: 0;
+  overflow: hidden;
   pointer-events: none;
   transform: translateY(0.75rem) scale(0.98);
   transition:
@@ -550,11 +647,46 @@ img {
   transform: translateY(0) scale(1);
 }
 
+.part-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.progress-line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(197, 255, 174, 0) 0%,
+    rgb(197, 255, 174) 40%,
+    rgb(197, 255, 174) 60%,
+    rgba(197, 255, 174, 0) 100%
+  );
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: 0 0.5px;
+  transition:
+    transform 5s linear,
+    opacity 0.3s;
+}
+
+.part-card.is-active .progress-line {
+  opacity: 1;
+}
+
 .part-card__thumb {
   flex: 0 0 auto;
   width: 3.3125rem;
   height: 3.8125rem;
   display: block;
+  object-fit: cover;
+  object-position: center;
+  mix-blend-mode: screen;
 }
 
 .part-card h3,
@@ -907,7 +1039,8 @@ img {
   justify-content: center;
   min-width: var(--label-width);
   padding: 1.5rem;
-  border: 1px solid var(--acid);
+  overflow: hidden;
+  border: 1px solid rgba(7, 7, 7, 0.14);
   border-radius: 0.5rem;
   background: rgba(255, 255, 255, 0.2);
   color: var(--black);
@@ -920,6 +1053,35 @@ img {
   line-height: 1;
   backdrop-filter: blur(2px);
   pointer-events: none;
+}
+
+.texture-card__label::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(197, 255, 174, 0) 0%,
+    rgb(197, 255, 174) 40%,
+    rgb(197, 255, 174) 60%,
+    rgba(197, 255, 174, 0) 100%
+  );
+  content: "";
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: 0 0.5px;
+  transition:
+    transform 5s linear,
+    opacity 0.3s;
+}
+
+.texture-card:hover .texture-card__label::before,
+.texture-card:focus-visible .texture-card__label::before,
+.texture-card.is-featured .texture-card__label::before {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .texture-card--tort {
@@ -1659,6 +1821,43 @@ img {
   .product-system__image {
     width: 100%;
     transform: none;
+  }
+
+  .product-cutout {
+    inset: 5%;
+    width: 90%;
+    height: 90%;
+  }
+
+  .product-cutout--interface {
+    --explode-x: -15%;
+    --explode-y: -2%;
+  }
+
+  .product-cutout--outer {
+    --explode-x: 15%;
+    --explode-y: 6%;
+  }
+
+  .product-hotspot--interface {
+    top: 43%;
+    left: 20%;
+    width: 20%;
+    height: 20%;
+  }
+
+  .product-hotspot--engine {
+    top: 43%;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+  }
+
+  .product-hotspot--outer {
+    top: 28%;
+    left: 59%;
+    width: 29%;
+    height: 46%;
   }
 
   .part-card {

@@ -98,12 +98,33 @@
               <span>Passive&nbsp;&nbsp;memory</span>
             </h2>
 
-            <div class="product-system__figure" aria-label="m.v sensor component diagram">
-              <canvas
-                class="product-system__canvas"
-                data-product-scene
-                aria-hidden="true"
-              ></canvas>
+            <div class="product-system__figure" data-product-cutout-scene aria-label="m.v sensor component diagram">
+              <div class="product-cutout-scene" aria-hidden="true">
+                <img
+                  class="product-cutout product-cutout--outer"
+                  src="assets/Glass.png"
+                  alt=""
+                />
+                <img
+                  class="product-cutout product-cutout--engine"
+                  src="assets/Chip.png"
+                  alt=""
+                />
+                <img
+                  class="product-cutout product-cutout--interface"
+                  src="assets/Metal.png"
+                  alt=""
+                />
+              </div>
+              <button class="product-hotspot product-hotspot--interface" data-part-hotspot="interface" type="button" aria-describedby="interface-disc-card">
+                <span class="sr-only">Interface Disc</span>
+              </button>
+              <button class="product-hotspot product-hotspot--engine" data-part-hotspot="engine" type="button" aria-describedby="memory-engine-card">
+                <span class="sr-only">Memory Engine</span>
+              </button>
+              <button class="product-hotspot product-hotspot--outer" data-part-hotspot="outer" type="button" aria-describedby="outer-layer-card">
+                <span class="sr-only">Outer Layer</span>
+              </button>
               <img
                 class="product-system__image"
                 src="assets/product-system-figure.png"
@@ -113,11 +134,12 @@
 
               <div class="part-card-wrap part-card-wrap--interface">
                 <article class="part-card" id="interface-disc-card" data-part-card="interface">
-                  <canvas
+                  <div class="progress-line" aria-hidden="true"></div>
+                  <img
                     class="part-card__thumb"
-                    data-part-thumb="interface"
-                    aria-hidden="true"
-                  ></canvas>
+                    src="assets/Metal.png"
+                    alt=""
+                  />
                   <div>
                     <h3>Interface Disc</h3>
                     <p>Returns stored memory to conscious experience.</p>
@@ -127,11 +149,12 @@
 
               <div class="part-card-wrap part-card-wrap--engine">
                 <article class="part-card" id="memory-engine-card" data-part-card="engine">
-                  <canvas
+                  <div class="progress-line" aria-hidden="true"></div>
+                  <img
                     class="part-card__thumb"
-                    data-part-thumb="engine"
-                    aria-hidden="true"
-                  ></canvas>
+                    src="assets/Chip.png"
+                    alt=""
+                  />
                   <div>
                     <h3>Memory Engine</h3>
                     <p>
@@ -144,11 +167,12 @@
 
               <div class="part-card-wrap part-card-wrap--outer">
                 <article class="part-card" id="outer-layer-card" data-part-card="outer">
-                  <canvas
+                  <div class="progress-line" aria-hidden="true"></div>
+                  <img
                     class="part-card__thumb"
-                    data-part-thumb="outer"
-                    aria-hidden="true"
-                  ></canvas>
+                    src="assets/Glass.png"
+                    alt=""
+                  />
                   <div>
                     <h3>Outer Layer</h3>
                     <p>
