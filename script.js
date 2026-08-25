@@ -128,7 +128,11 @@ function setupRevealText(element) {
 
   for (const character of text) {
     if (character === "\n") {
-      fragment.appendChild(document.createElement("br"));
+      const lineBreak = document.createElement("span");
+      lineBreak.className = "reveal__line-break";
+      lineBreak.setAttribute("aria-hidden", "true");
+      lineBreak.appendChild(document.createElement("br"));
+      fragment.appendChild(lineBreak);
       continue;
     }
 
@@ -449,6 +453,13 @@ function playHomeLetterGlitch() {
 }
 
 function setupMaskRevealTitle(element) {
+  if (
+    window.matchMedia("(max-width: 760px)").matches &&
+    element.closest(".product-system")
+  ) {
+    return;
+  }
+
   const lines = Array.from(element.children);
   let globalLetterIndex = 0;
 
@@ -587,6 +598,7 @@ if (siteMenu && siteMenuButton) {
   siteMenuButton.addEventListener("click", () => {
     const isOpen = siteMenu.classList.toggle("is-menu-open");
     siteMenuButton.setAttribute("aria-expanded", String(isOpen));
+    siteMenuButton.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
     siteMenu.classList.remove("is-dot-swapping");
     void siteMenu.offsetWidth;
     siteMenu.classList.add("is-dot-swapping");
@@ -596,6 +608,7 @@ if (siteMenu && siteMenuButton) {
     if (!siteMenu.contains(event.target)) {
       siteMenu.classList.remove("is-menu-open");
       siteMenuButton.setAttribute("aria-expanded", "false");
+      siteMenuButton.setAttribute("aria-label", "Open menu");
     }
   });
 
@@ -603,6 +616,7 @@ if (siteMenu && siteMenuButton) {
     if (event.key === "Escape") {
       siteMenu.classList.remove("is-menu-open");
       siteMenuButton.setAttribute("aria-expanded", "false");
+      siteMenuButton.setAttribute("aria-label", "Open menu");
       siteMenuButton.focus();
     }
   });
